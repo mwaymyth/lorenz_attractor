@@ -18,7 +18,7 @@
 int th=0;
 int ph=0;
 double dim=100;
-//char* text[];
+
 
 
 /*  Lorenz Parameters  */
@@ -66,32 +66,31 @@ void display()
    double z = 1;
    /*  Time step  */
    double dt = 0.001;
+
+   //  Draw green lines
+   glColor3f(0,1,0);
+   glBegin(GL_LINE_STRIP);
    /*
     *  Integrate 50,000 steps (50 time units with dt = 0.001)
     *  Explicit Euler integration
     */
-    //  Draw yellow lines
-    glColor3f(1,1,0);
-    glBegin(GL_LINE_STRIP);
-   for (i=0;i<50000;i++)
-   {
-      double dx = s*(y-x);
-      double dy = x*(r-z)-y;
-      double dz = x*y - b*z;
-      x += dt*dx;
-      y += dt*dy;
-      z += dt*dz;
-      if (i == 20000)
-        glColor3f(1,0,0);
-      // else if (i == 20000)
-      //   glColor3f(1,0,1);
-      // else if (i == 30000)
-      //   glColor3f(0,0,1);
-      else if (i == 40000)
-        glColor3f(0,1,1);
-      //printf("%5d %8.3f %8.3f %8.3f\n",i+1,x,y,z);
-      glVertex3d(x,y,z);
-   }
+    for (i=0;i<50000;i++)
+    {
+       double dx = s*(y-x);
+       double dy = x*(r-z)-y;
+       double dz = x*y - b*z;
+       x += dt*dx;
+       y += dt*dy;
+       z += dt*dz;
+       // Changes the color to RGB(1,0,0) when i is 20000
+       if (i == 20000)
+          glColor3f(1,0,0);
+        // Changes the color to RGB(0,0,1) when i is 40000
+        else if (i == 40000)
+          glColor3f(0,0,1);
+        // Adds a new point to the lorenz attractor
+        glVertex3d(x,y,z);
+      }
    glEnd();
    //  Draw axes in white
    glColor3f(1,1,1);
@@ -111,12 +110,8 @@ void display()
    glRasterPos3d(0,0,65);
    Print("Z");
    //  Display parameters
-   // glWindowPos2i(5,5);
-   // Print("View Angle=%d,%d  %s",th,ph,text[mode]);
-   // if (mode==2)
-   //    Print("  z=%.1f",z);
-   // else if (mode==4)
-   //    Print("  w=%.1f",w);
+   glWindowPos2i(5,25);
+   Print("View Angle=%d,%d Radius:%d",th,ph,r);
    //  Flush and swap
    glFlush();
    glutSwapBuffers();
@@ -128,8 +123,13 @@ void key(unsigned char ch, int x, int y)
   // Exit on ESC
   if (ch == 27)
     exit(0);
+  //  Reset view angle
+  else if (ch == '0')
+    th = ph = 0;
+  // Increases r by 0.5
   else if (ch == '+')
     r += 0.5;
+  // Decreases r by 0.5
   else if (ch == '-')
     r -= 0.5;
   //  Tell GLUT it is necessary to redisplay the scene
