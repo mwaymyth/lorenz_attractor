@@ -10,7 +10,7 @@ Display 3 dimensional coordinates of the Lorenz Attractor in 3D.
 Time taken to complete the Assignment: 5hrs
 
 Key bindings
-  +/-    Increase/decrease r by 0.5
-  arrows Change view angle
-  0      Reset view angle
-  ESC    Exit
+   +/-    Increase/decrease r by 0.5
+   arrows Change view angle
+   0      Reset view angle
+   ESC    Exit
